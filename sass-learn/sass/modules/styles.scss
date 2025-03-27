@@ -1,0 +1,12 @@
+@use 'modules/styles-forwarded.scss';
+@use 'modules/tabs.css';
+
+// as * даст нам возможность использовать mixin без namespace
+// * не рекомендуется, чтбы избежать конфликт имен
+
+.custom-button {
+    @include styles-forwarded.button(); // вместо названия модуля, в котором есть миксин, используем типо общий модуль
+
+    background-color: styles-forwarded.$background-color2; // 3 нельзя юзать
+    // background-color: styles-forwarded.$v-background-color2 ------ че за бля v- ??????? короче, в forward файле мы добавили f
+}

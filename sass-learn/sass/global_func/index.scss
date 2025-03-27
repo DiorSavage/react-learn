@@ -1,0 +1,12 @@
+@use 'sass:list';
+@use 'sass:string';
+
+$colors: green blue;
+$string: 'StriNG';
+
+@debug list.length($colors);
+
+
+@debug string.to-upper-case($string);
+@debug string.to-lower-case($string);
+@debug string.unique-id()

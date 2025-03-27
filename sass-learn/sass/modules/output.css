@@ -1,0 +1,13 @@
+main {
+  background-color: #ff00ff;
+}
+
+.custom-button {
+  background-color: antiquewhite;
+  background-color: #00ffff;
+}
+.custom-button .button-title {
+  font-size: 15px;
+}
+
+/*# sourceMappingURL=output.css.map */

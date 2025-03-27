@@ -1,0 +1,39 @@
+// интерполяция оборачивает то, что мы передали и делает из этого строку
+
+$theme-prefix: theme1;
+
+p.theme-#{$theme-prefix} {
+    color: #00ff00
+}
+
+$size: 12px;
+$modificator: 3;
+
+span {
+    font-size: #{$size } / #{$modificator}; // строковое представление этого выражения
+    font-size: $size / $modificator;
+}
+
+a {
+    &--modifier {
+        color: green;
+    }
+}
+
+a {
+    #{&}--modifier { // строковое представление тега a
+        color: blue;
+    }
+}
+
+@mixin define-icon($name) {
+    font-size: 18px;
+    .icon-#{$name} {
+        content: $name;
+    }
+}
+
+.comp {
+    background-color: red;
+    @include define-icon('computer')
+}

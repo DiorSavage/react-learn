@@ -1,0 +1,75 @@
+main {
+
+    & .info {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgb(253, 253, 253);
+        border-radius: 25px;
+        width: 80%;
+        font-size: 20px;
+        font-family: "Ubuntu";
+        letter-spacing: 3.2px;
+        word-spacing: 6px;
+        line-height: 1.5;
+        padding: 22px;
+        text-indent: 70px;
+    }
+
+    & > .local__block {
+        width: 80%;
+        height: 60vh;
+        background-color: white;
+        padding: 25px;
+
+        & > h1 {
+            font-size: 36px;
+            letter-spacing: 6px;
+            font-family: "Ubuntu";
+            margin-left: 50px;
+        }
+
+        & > input {
+            width: 85%;
+            height: 70px;
+            padding: 6px;
+            padding-left: 12px;
+            font-size: 25px;
+            font-weight: 600;
+            letter-spacing: 6px;
+            border: 0;
+            outline: 0;
+            background-color: rgb(223, 220, 220);
+            border-radius: 15px;
+            margin-left: 50px;
+        }
+
+        & > .buttons_block {
+            width: 45%;
+            display: flex;
+            padding: 30px;
+            margin-top: 15px;
+            justify-content: space-between;
+            margin-left: 50px;
+
+            & > button {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 28px;
+                font-weight: 600;
+                color: black;
+                background-color: rgb(247, 233, 36);
+                border: 0;
+                border-radius: 15px;
+                width: 24%;
+                height: 100px;
+                cursor: pointer;
+                transition: all .25s ease;
+            }
+            & > button:hover {
+                background-color: transparent;
+            }
+        }
+    }
+}

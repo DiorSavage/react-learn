@@ -1,0 +1,97 @@
+// <p class="message message-info">
+//     Settings were updated
+// </p>
+// <p class="message message-success">
+//     Settings were updated
+// </p>
+
+// допустим есть эта параша
+
+@use 'module2' as m2;
+
+// first approach
+
+// .message {
+//     border-radius: 5px;
+//     width: 100%;
+//     height: 50px;
+// }
+
+// .message-info {
+//     background-color: lightblue;
+//     border-color: blue;
+//     color: blue;
+// }
+
+// second approach  с помощью наследования
+
+// .message-info {
+//     @extend .message;
+//     background-color: lightblue;
+//     border-color: blue;
+//     color: blue;
+// }
+
+// или
+
+.message {
+    border-radius: 5px;
+    width: 100%;
+    height: 50px;
+
+    &:hover {
+        opacity: 1; // -------- применится и к .message и .message-info
+    }
+
+    &-info {
+        @extend .message;
+        background-color: lightblue;
+        border-color: blue;
+        color: blue;
+    }
+}
+
+// чтобы .message не должен быть использован сам по себе, а как класс для наследования
+
+// placeholder селекторы
+
+// .message-info {
+//     @extend %message; // не нужен namespace для того, чтобы вызвать из модуля
+//     background-color: lightblue;
+//     border-color: blue;
+//     color: blue;
+// }
+
+// если вдруг нельзя импортировать что-то из модуля из-за %-, то можно сделать так
+
+.message-info {
+    @extend %message !optional; // не нужен namespace для того, чтобы вызвать из модуля
+    background-color: lightblue;
+    border-color: blue;
+    color: blue;
+}
+
+.message-success {
+    @extend %-message !optional;
+    background-color: lightgreen;
+    border-color: green;
+    color: blue;
+}
+
+@mixin border() {
+    border-radius: 5px;
+}
+
+%base-message {
+    @include border();
+    width: 100%;
+    height: 50px;
+    opacity: 0.7;
+}
+
+.success-message {
+    @extend %base-message;
+    background-color: lightgreen;
+    border-color: green;
+    color: green;
+}

@@ -1,0 +1,37 @@
+:root {
+  --color: #fff;
+}
+
+.main {
+  background-color: var(--color);
+}
+
+.main-container {
+  background-color: #00ff00;
+}
+
+.title {
+  font-size: 18px;
+}
+
+.subtitle {
+  font-size: 20px;
+}
+
+.button {
+  border-radius: 10px;
+}
+.button .button-title {
+  font-size: 10px;
+  color: #cd29ff;
+}
+
+.p1::before {
+  content: "local value";
+}
+
+.p2::before {
+  content: "global value";
+}
+
+/*# sourceMappingURL=output_var.css.map */

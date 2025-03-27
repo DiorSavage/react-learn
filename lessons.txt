@@ -1,0 +1,527 @@
+Все компоненты должны быть в разных файлах, для каждого компонента отдельный файл
+
+
+вместо того, чтобы импортировать все компоненты в файл index.js, лучше импортировать их в файл App.js
+после импорта в функции App.js пишем название компонента, как тег
+пример 
+
+import CostItem from "./components/Costitem";
+
+
+function App() {
+  return (
+    <div>
+      <h1>Начнем изучение React</h1>
+      <CostItem></CostItem> -----> Вот он
+    </div>
+  );
+}
+
+export default App;
+
+
+css файлы нужно импортировать с расширением 
+пример
+import './file_css.css'
+
+
+чтобы отображать динамические данные в return, нужно щаписывать их в фигурные скобки
+пример
+import './CostItem.css'
+
+function CostItem() {
+
+    const costDate = new Date(2021, 2, 12)
+    const costDescription = 'Холодильник' -----> допустим, данные пришли от пользователя
+    const costAmount = 999.99
+
+    return (
+        <div className='cost-item'>
+            <div>{costDate.toISOString()}</div>
+            <div className='cost-item_description'>
+                <h2>{costDescription}</h2> -----> засунули в HTML код
+                <div className='cost-item_price'>${costAmount}</div>
+            </div>
+        </div>
+    );
+}
+
+
+Лучше всего обозначать данные в App.js 
+допустим у нас есть данные
+
+function App() {
+
+  const costs = [
+    {
+      date: new Date(2021, 2, 12),
+      description: 'Холодильник',
+      amount: 999.99
+    },
+    {
+      date: new Date(2021, 11, 25),
+      description: 'MacBook',
+      amount: 1254.72
+    },
+    {
+      date: new Date(2021, 2, 12),
+      description: 'Джинсы',
+      amount: 49.99
+    }
+  ]
+  return (
+    <div>
+      <h1>Начнем изучение React</h1>
+      <CostItem date={costs[0].date} description={costs[0].description} amount={costs[0].amount}></CostItem>
+      <CostItem date={costs[1].date} description={costs[1].description} amount={costs[1].amount}></CostItem>
+      <CostItem date={costs[2].date} description={costs[2].description} amount={costs[2].amount}></CostItem>
+    </div>
+  );
+}
+
+export default App;
+
+Чтобы эти данные использовались на странице, нужно перейти в компонент, где выводятся эти данные, и в функцию аргументом передаем любое название( желательно название props)
+Теперь пишеем это
+
+
+function CostItem(props) {
+ теперь не нужны ебучие константы
+    return (
+        <div className='cost-item'>
+            <div>{props.date.toISOString()}</div>
+            <div className='cost-item_description'>
+                <h2>{props.description}</h2>
+                <div className='cost-item_price'>${props.amount}</div>
+            </div>
+        </div>
+    );
+}
+
+Передача данных через props делает наши компоненты более гибкими и повторно используемыми, а также передать данные из одного компонента в другой
+
+
+каждый раз в компонентах чтобы что-то вывести (хтмл код) нужна оболчка в виде начального дива
+но можно использовать кастомные тег ( компонент )
+Для того, чтобы все не слетело в оболочке компонента пишем это
+пример
+<div className = 'card'>
+    {props.children}
+</div>
+таким образом можно урезать код css, если вдруг есть какие-то повторения кода
+
+
+Могут так же и снестись все стили, если в одном js файле указать атрибут className и в другом js файле к тому же компоненту указать атрибут className
+чтобы это избежать, нужно в одном из файлов через пробел указать сразу два, три и тд класса/ов
+
+а можно и так
+в одном из файлов уже указан стиль
+
+function CostItem(props) {
+    return (
+        <Card className='cost-item'> <----- вот
+            <CostDate date={props.date}/>
+            <div className='cost-item_description'>
+                <h2>{props.description}</h2>
+                <div className='cost-item_price'>${props.amount}</div>
+            </div>
+        </Card>
+    );
+}
+
+в другом же сделать так
+
+function Card(props) {
+    const classes = 'card ' + props.className
+    return <div className='card'> {props.children} </div>
+}
+
+
+Работа с событиями и состояниями
+Клик
+Для добавления события клик на элемент все по дефолту с маленькими изменениями
+для элемента добавим атрибут onClick = {} (именно большая буква), добавляем функцию в скобки
+
+Состояния
+
+Пример кода
+const CostItem = (props) => {
+    let description = props.description
+
+    const changeDescriptionHandler = (event) => {
+        description = 'New text'
+        console.log('Text updated')
+    }
+    return (
+        <Card className='cost-item'>
+            <CostDate date={props.date}/>
+            <div className='cost-item_description'>
+                <h2>{description}</h2>
+                <div className='cost-item_price'>${props.amount}</div>
+            </div>
+            <button onClick={changeDescriptionHandler}>
+                Change description</button>
+        </Card>
+    );
+}
+
+вроде как должны обновляться данные, но ничего такого не произойдет
+это особенность работы React
+для изменения данных помогут состояния
+
+import React, { useState } from 'react'
+импортируем React и определенную функцию useState
+
+Теперь добавляем функцию useState() - так называемый хук
+Теперь в функцию добавляем дефолт значение, которое впоследствии будем изменять
+useState() - возвращает массив с саамим значением и обновленную функцию
+Будет так
+
+import './CostItem.css'
+import CostDate from './CostDate'
+import Card from '../UI/Card'
+import React, { useState } from 'react'
+
+
+const CostItem = (props) => {
+
+    const [description, setDescription] = useState(props.description) соответственное присваивание
+    первый элемент - то, что мы меняем, это переменная, которой будет присвоено значение props.description
+    второй - функция, которая поменяет значение переменной description на то, которое будет в скобках  
+
+    const changeDescriptionHandler = (event) => {
+        setDescription('New text')
+        console.log('Text updated')
+    }
+    return (
+        <Card className='cost-item'>
+            <CostDate date={props.date}/>
+            <div className='cost-item_description'>
+                <h2>{description}</h2>
+                <div className='cost-item_price'>${props.amount}</div>
+            </div>
+            <button onClick={changeDescriptionHandler}>
+                Change description</button>
+        </Card>
+    );
+}
+
+Передача данных по компонентам вверх
+Допустим есть три компонента
+App.js >>> NewCost.js >>> CostForm.js   нужно передать данные из CostForm в App.js
+
+в NewCost.js создаем атрибут в тег в CostForm
+
+
+
+const saveCostDataHandler = (InputCostData) => {
+    console.log(InputCostData)
+}
+
+return <div className='new-cost'>
+    <CostForm onSaveCostData={saveCostDataHandler} />
+</div>
+
+В CostForm передаем props
+const CostForm = (props) => {...}
+в функции, где у нас принимаются все данные, которые нужно перенести в другой компонент, через props ( а это переданная функция onSaveCostData={saveCostDataHandler}) вызываем функцию
+
+ const submitHandler = (event) => {
+        event.preventDefault()
+
+        const costData = {    <----- все данные, которые передаем
+            name: inputName,
+            amount: inputAmount,
+            date: new Date(inputDate),
+        }
+
+        props.onSaveCostData(costData) <---- функция, которая забирает данные в компонент, где указан функция onSaveCostData
+        setInputAmount('')
+        setInputDate('')
+        setInputName('')
+    }
+
+дефолт схема:
+
+-- в родительском компоненте компоненту-ребенку передаем атрибут, значением которого будет функция, которая имеет один параметр, отображающий в будущем и хранящий данные из компонента-ребенка
+-- в род компоненте создаем функцию, которую и передадим компоненту ребенку через props, а в ней мы еще создаем объект, где сначало передаем прошлые данные в этот объект
+-- в компоненте ребенке вызываем через props.функция(именно название атрибута, а не функция, которая была передана), и передаем этоЙ функцие наши данные
+-- теперь в род компоненте появятся эти данные в качестве значения параметра функции, которая была передана компоненту-ребенку, и мы можем с этими данными работать или передавать дальше, другим компонентам
+
+пример для понимания: 
+
+ребенок компонент
+const submitHandler = (event) => {
+    event.preventDefault() // Удаляем дефолтное поведение кнопки submit
+
+    const costData = { данные
+        name: inputName,
+        amount: inputAmount,
+        date: new Date(inputDate),
+    }
+
+    props.onSaveCostData(costData) передаем данные
+    setInputAmount('')
+    setInputDate('')
+    setInputName('')
+}
+
+
+const saveCostDataHandler = (InputCostData) => { род компонент
+    const costData = { 
+        ...InputCostData,   передаем данные
+        id: Math.random().toString(), айди хз
+    }
+    props.onSaveCostDataApp(costData) опять данные в верхний компонент
+}
+
+Подъем состояния вверх
+
+передача данных на прямую компонентам одного уровня невозможна
+Поэтому передачу данных можно совершать с помощью род компонента
+
+
+Работа со списками
+допустим, мы будем выводить данные пользователя, которые он будет постоянно обновляться
+но тогда нужно написать функцию, которая в JSX код будет добавлять новый тег
+
+чтобы в JSX коде писать простой js код, то нужно написать код в {} скобках
+
+пример
+
+{props.costs.map((cost) => (
+    <CostItem date={cost.date} description={cost.description} amount={cost.amount} />
+))}
+
+
+Warning: Each child in a list should have a unique "key" prop.
+
+Check the render method of `Costs`. See https://reactjs.org/link/warning-keys for more information.
+    at CostItem (http://localhost:3000/static/js/bundle.js:378:19)
+    at Costs (http://localhost:3000/static/js/bundle.js:479:74)
+    at div
+    at App (http://localhost:3000/static/js/bundle.js:47:76)
+
+ошибка, которую нужно решать
+Переходим в тот компонент, где мы отображаем список
+
+Далее переходим в тот отрезко, где мы создаем данные для отображения, там нужно создать key для того, чтобы React отличал списки
+для этого можно добавить изначально к каждым данным id, его значение можно использовать, как key 
+
+
+вместо if в {} в функциях компонентах нужно либо
+использоват это условие ? действие : действие, когда типо else
+
+либо это
+условие && действие
+условие && действие и тд
+примеры
+
+
+{filtered_costs.length === 0 ? <p>В этом году расходов нет</p> : 
+filtered_costs.map((cost) => (
+    <CostItem 
+        key={cost.id} // нужно для react
+        date={cost.date}
+        description={cost.description}
+        amount={cost.amount}
+    />
+))}
+
+
+{filtered_costs.length === 0 && <p>В этом году расходов нет</p>}
+{filtered_costs.length > 0 && 
+filtered_costs.map((cost) => (
+    <CostItem 
+        key={cost.id} // нужно для react
+        date={cost.date}
+        description={cost.description}
+        amount={cost.amount}
+    />
+))}
+
+
+Можно так же использовать JSX код в переменные в js
+
+let costsContent = <p>В этом году расходов нет</p> 
+Без скобок, без всей остальной хуйни будет работать
+
+Передача css в JSX коде нужно производить через {}
+пример
+
+<div className="diagram-bar_fill" style={{
+                    
+                }}>
+
+
+
+Переход на другие страницы
+
+
+сначало устанавливаем в папке проекта react Router
+
+npm install react-router-dom
+
+после нужно определить пути
+
+пример 
+заходим в App и импортируем router
+
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+
+псле определяем пути
+
+<Router>
+    <NavBar />
+
+    <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/projects' element={<Projects />} />
+        <Route path='/contacts' element={<Contacts />} />
+        <Route path='/projectDom' element={<ProjectDom />} />
+        <Route path='/' element={<Home />} />
+    </Routes>
+    <Footer />
+</Router>
+
+В тег Router закидываем все, что на странице
+в Routes каждый путь создается с помощью Route
+
+<Route path='/' element={<Home />} /> // path - путь на страницу, element - HTML компонент, на который будет переход
+
+после определения путей нужно эти пути как бы создать
+допустим, в компоненте NavBar есть сылки на другие страницы
+заходим в код компонента NavBar и импортируем NavLink
+
+import {NavLink} from 'react-router-dom'
+
+Это будет, как тег a
+
+<NavLink>
+    <strong className='logo'>Freelancer</strong> portfolio
+</NavLink>
+
+
+
+Полезная хуйня
+npm install express pg pg-hstore sequelize cors dotenv
+
+
+
+импорт css стилей как модуль
+для этого нужно назвать css файл так: название.module.css
+далее импорт
+import styles(можно назвать как угодно) from './путьдофайла
+
+используем, как переменную-объект, где класс через точку, айди через точку и тд
+пример:
+
+css code:
+
+.header {
+    color: red;
+}
+
+jsx code:
+
+className={styles.header}
+
+
+ALIAS
+полезная хуйня для импортов
+
+скачиваем
+
+npm install --save-dev react-app-rewired react-app-rewire-alias
+
+в корневой папке создаем файл config-overrides.js
+
+после пишем в файле это
+
+const { alias } = require('react-app-rewire-alias')    
+
+module.exports = function override(config, env) {
+    alias({
+        '@components': 'src/components', ----- пути, в пример путь до компонента
+    })(config)
+
+    return config
+}
+
+теперь вместо прописывания обычного пути, допустим './../../components/Component
+
+пишем просто '@components/Component
+
+НО ЕСЛИ ЭКСПОРТИРУЕМЫЙ ФАЙЛ РЯДОМ С ФАЙЛОМ, ГДЕ ИМПОРТИРУЕМ, ТО ИСПОЛЬЗОВАТЬ ALIAS НЕ НУЖНО
+
+УДОБНО
+
+
+propTypes
+
+скачиваем
+
+npm install --save prop-types
+
+в файле, где мы используем пропсы прописываем их тип
+
+import PropTypes from 'prop-types'
+
+{component}.propTypes = {
+    props: PropTypes.{type of props}
+}
+Компонент высшего порядка (Higher-Order Component, HOC) — это один из продвинутых способов для повторного использования логики. 
+HOC не являются частью API React, но часто применяются из-за композиционной природы компонентов.
+Говоря просто, компонент высшего порядка — это функция, которая принимает компонент и возвращает новый компонент.
+
+
+useLocation hook 
+
+import { useLocation } from 'react-router-dom'
+
+показывает текущее положение на сайте
+
+Outlet и Layout
+
+короче, в Routes вместо прописывания такой шняги
+
+ <>
+    <header className={styles.header}>
+        <Link to="/">Home</Link>
+        <Link to="/blog">Post</Link>
+        <Link to="/about">About</Link>
+    </header>
+    <Routes>
+        <Route path='/' element={<Home></Home>} />
+        <Route path='/about' element={<About></About>} />
+        <Route path='/blog' element={<Block></Block>} />
+        <Route path='*' element={<NotFound></NotFound>} />
+    </Routes>
+    <footer>footer</footer>
+</>
+мы можем поместить header и footer ( блоки, которые есть на всех страничках ) в один компонент, назовем Layout
+
+вот Layout
+
+<>
+    <header className={styles.header}>
+        <Link to="/">Home</Link>
+        <Link to="/blog">Post</Link>
+        <Link to="/about">About</Link>
+    </header>
+    <Outlet />
+    <footer>2021</footer>
+</>
+
+вместо Outlet будет помещаться компонент из Route ( ну, в зависимоти от пути ), только еще в компоненте, где были роуты, нужно все роуты поместить в один Route
+
+<Routes>
+    <Route path='/' element={<Layout></Layout>}>
+        <Route index element={<Home></Home>} /> ---> index из-за того, что путь path='/' уже прописан в Route с Layout
+        <Route path='about' element={<About></About>} /> ---> path в Route могут идти без /
+        <Route path='blog' element={<Block></Block>} />
+        <Route path='*' element={<NotFound></NotFound>} />
+    </Route>
+</Routes>
+
+идеально нахуй

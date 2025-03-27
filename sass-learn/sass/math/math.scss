@@ -1,0 +1,61 @@
+@use 'sass:math';
+
+@debug 2px * 2; // 4px
+@debug 2px * 2px; // 4px*px
+
+@debug #{2 * 2}px; //4px
+@debug #{2}px + 2px; // 2px2px ( интерполяция понимается sass по-другому и  + работает как конкатинация)
+
+@debug 2px * 2s; // 4px*s
+
+@debug 1s + 2ms; // 1.002s
+
+@debug 2e3; // 2000 типо 2 * 10**3
+// @debug 2px + 2s ----- нельзя
+@debug 2px + 2in; // дюймф переведены в пиксели
+@debug 2in + 2px; // наоборот, пиксели в дюймы
+
+// @debug 2px + 2em; ------- ошибка, с rem тоже ошибка
+
+// все действия можно и в других измерениях, а также и без измерений
+@debug 5px + 2px;
+@debug 5px - 2px;
+@debug 5px / 2px;
+@debug 5px % 2px;
+@debug 5px * 2px;
+@debug -(50*100);
+@debug +(50*100);
+
+@debug 10 -5 30;
+@debug 10-5 30;
+
+$number: 5;
+@debug 10 $number 30;
+@debug 10 -$number 30;
+
+// чтобы юзать / как деление
+
+@debug 30/10; // 30/10
+@debug math.div(30, 9); // альтернатива /
+
+@debug math.round(30.65);
+@debug math.round(30.45);
+
+@debug math.floor(4.9);
+@debug math.ceil(4.1);
+
+@debug math.max(4, 6, 31, 32);
+@debug math.min(4, 6, 31, 32);
+
+@debug math.compatible(4px, 1s);
+@debug math.compatible(4px, 1in);
+@debug math.compatible(4px, 1em);
+
+@debug math.is-unitless(100); // содержит unit`ы или нет
+@debug math.is-unitless(100px);
+
+@debug math.percentage(0.2); // 20%
+@debug math.percentage(math.div(100px, 50px)); // 2 - 200%
+
+@debug math.random(10); // 0-10 онли один аргумент
+@debug math.random(); // 0-1

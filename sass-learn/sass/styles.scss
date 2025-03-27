@@ -1,0 +1,17 @@
+// THIS is a coment который не идет в css файл (тихий)
+
+/* THIS is a coment который идет в css файл (громкий) такой коммент вс еравно можно не компилировать, если в scripts прописать npm run sass -- --style=compressed --watch и т.л */
+/* compressed не дает вторым комментам попасть в css файл */
+
+/*! Вид комментария который в 100% будет компилироваться в css файл  */
+
+.main-container {
+    h1 {
+        background-color: green;    
+    }
+
+    p {
+        color: blue;
+        font-size: 18px;
+    }
+}

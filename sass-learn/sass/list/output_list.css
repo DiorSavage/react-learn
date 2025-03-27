@@ -1,0 +1,31 @@
+.button-size-sm {
+  width: 100px;
+  height: 70px;
+  border: 1px solid red;
+  margin: 4px 5px;
+}
+.button-size-sm > .button-title {
+  font-size: 8px;
+}
+
+.button-size-md {
+  width: 200px;
+  height: 140px;
+  border: 2px solid red;
+  margin: 8px 10px;
+}
+.button-size-md > .button-title {
+  font-size: 16px;
+}
+
+.button-size-lg {
+  width: 300px;
+  height: 210px;
+  border: 3px solid red;
+  margin: 12px 15px;
+}
+.button-size-lg > .button-title {
+  font-size: 24px;
+}
+
+/*# sourceMappingURL=output_list.css.map */

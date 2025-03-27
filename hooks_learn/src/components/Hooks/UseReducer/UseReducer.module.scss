@@ -1,0 +1,49 @@
+main {
+
+    & .info {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgb(253, 253, 253);
+        border-radius: 25px;
+        width: 80%;
+        font-size: 20px;
+        font-family: "Ubuntu";
+        letter-spacing: 3.2px;
+        word-spacing: 6px;
+        line-height: 1.5;
+        padding: 22px;
+        text-indent: 70px;
+    }
+    
+    & > .reducer__practice {
+        display: flex;
+        background-color: white;
+        padding: 25px;
+        width: 80%;
+        height: 60vh;
+
+        & > h1 {
+            font-size: 30px;
+            margin: 25px;
+            letter-spacing: 3px;
+        }
+
+        & > .button {
+            width: 120px;
+            height: 57px;
+            background-color: transparent;
+            border: 0;
+            border-radius: 15px;
+            font-size: 16px;
+            padding: 5px;
+            margin: 20px 15px 0px;
+            cursor: pointer;
+            transition: all .25s ease-in;
+        }
+
+        & > .button:hover {
+            background-color: rgb(207, 207, 207);
+        }
+    }
+}

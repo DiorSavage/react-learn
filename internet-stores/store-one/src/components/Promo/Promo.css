@@ -1,0 +1,82 @@
+.promo {
+    margin-bottom: 63px;
+}
+
+.promo__content {
+    display: flex;
+    border-radius: 60px;
+    background-color: #f4f6f5;
+    column-gap: 24px;
+    padding: 68px 68px 0px 120px;
+
+}
+
+
+
+.promo_title {
+    font-weight: 900;
+    font-size: 96px;
+    line-height: calc(120/96);
+    max-width: 480px;
+}
+
+.promo_description {
+    font-weight: 400;
+    font-size: 32px;
+    line-height: calc(48 / 32);
+    letter-spacing: -0.05em;
+}
+
+.promo_btn-wrapper {
+    margin: 15px 0 35px;
+    display: flex;
+    column-gap: 34px;
+    align-items: center;
+}
+
+.promo_btn-wrapper::before {
+    content: '';
+    display: inline-block;
+    width: 190px;
+    height: 32px;
+    background-image: url('./../../img/icons/decor-yellow.svg');
+}
+
+a.promo__btn {
+    padding: 18px 40px;
+    color: #fff;
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 1.5;
+    letter-spacing: -0.05em;
+    border-radius: 10px;
+    background-color: #000;
+    user-select: none;
+}
+
+.highlight {
+    position: relative;
+    display: inline-block;
+}
+
+.highlight span {
+    position: relative;
+}
+
+.highlight::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: -12px;
+    bottom: 0px;
+    left: -20px;
+    right: -160px;
+    background-color: #fff;
+    z-index: 0;
+    transform: rotate(-2deg)
+}
+
+.highlight--yellow::before {
+    background-color: var(--yellow);
+    right: -90px;
+}

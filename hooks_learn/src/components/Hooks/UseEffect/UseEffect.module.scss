@@ -1,0 +1,38 @@
+main {
+    & .info {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgb(253, 253, 253);
+        border-radius: 25px;
+        width: 80%;
+        font-size: 20px;
+        font-family: "Ubuntu";
+        letter-spacing: 3.2px;
+        word-spacing: 6px;
+        line-height: 1.5;
+        padding: 22px;
+        text-indent: 70px;
+    }
+
+    & > .buttons {
+        width: 80%;
+        height: 60vh;
+        background-color: white;
+        padding: 22px;
+
+        & > button {
+            width: 190px;
+            height: 65px;
+            cursor: pointer;
+            border: 0;
+            margin: 15px;
+            font-size: 18px;
+            background-color: transparent;
+            transition: all .25s ease;
+        }
+        & > button:hover {
+            background-color: rgb(175, 174, 174);
+        }
+    }
+}

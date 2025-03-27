@@ -1,0 +1,34 @@
+.ml-8p {
+  margin-left: 8px;
+}
+
+.ml-16p {
+  margin-left: 16px;
+}
+
+.ml-32p {
+  margin-left: 32px;
+}
+
+.button-type-success {
+  border: 2px solid #0f0;
+}
+.button-type-success > .button-title {
+  color: #0f0;
+}
+
+.button-type-info {
+  border: 2px solid #00f;
+}
+.button-type-info > .button-title {
+  color: #00f;
+}
+
+.button-type-error {
+  border: 2px solid #f00;
+}
+.button-type-error > .button-title {
+  color: #f00;
+}
+
+/*# sourceMappingURL=output_flow_each.css.map */

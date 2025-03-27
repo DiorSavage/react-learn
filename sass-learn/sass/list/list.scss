@@ -1,0 +1,31 @@
+@use 'sass:list';
+
+// особенность ебанного SASS в том, что индексация с 1
+
+@debug (1, 2, 3);
+// эквивалентно
+@debug (1 2 3);
+
+@debug list.nth(1 2 3, 1); // обращаемся к первому элементу списка
+@debug list.nth(1 2 3, -1);
+@debug list.nth([1,2,3], -1); // явное обозначени списка, но блять что, почему красное
+@debug list.nth((1,2,3), -1); // тоже явное обозначение списка, но с круглыми
+
+@mixin button-size($selectors...) {
+    // как будто можно и @for $i from 0 to list.length($selectors)
+    // но тогда и при переборке нужно будет юзать $i + 1
+    @for $i from 1 through list.length($selectors) {
+        #{list.nth(($selectors), $i)} {
+            width: 100px * $i;
+            height: 70px * $i;
+            border: 1px * $i solid red;
+            margin: $i * 4px $i * 5px;
+            & > .button-title {
+                font-size: $i * 8px;
+            }
+        }
+    }
+}
+
+
+@include button-size('.button-size-sm', '.button-size-md', '.button-size-lg')

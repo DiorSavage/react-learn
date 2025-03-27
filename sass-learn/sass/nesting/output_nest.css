@@ -1,0 +1,27 @@
+main h1 {
+  color: #00ff00;
+}
+main > section {
+  background-color: #00ff00;
+}
+main > section .title-container {
+  border-radius: 5px;
+}
+main > section .content-container {
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  background-color: green;
+  background-position: 50% center;
+  background-repeat: no-repeat;
+}
+
+main {
+  background: red;
+  background-position: 50% center;
+  background-repeat: no-repeat;
+}
+
+/*# sourceMappingURL=output_nest.css.map */

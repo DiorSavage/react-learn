@@ -1,0 +1,108 @@
+@use "sass:meta";
+
+@mixin button-size($padding-y, $padding-x, $border-radius, $font-size) { // передача локальных переменных в mixin
+    padding: $padding-y $padding-x;
+    border-radius: $border-radius;
+    > .button__title {
+        font-size: $font-size
+    }
+}
+// @mixin button-size {                 DEFAULTIK
+//     padding: 5px 10px;
+//     border-radius: 5px;
+//     > .button__title {
+//         font-size: 12px
+//     }
+// }
+
+@mixin hover {
+    &:not([disabled]):hover {
+        @content('disabled'); // контент может иметь аргументы
+    }
+    &:hover {
+        @content('not-disabled'); // в контент передается аргумент, обозначающий, имеет ли элемент disabled или нет
+        // после с помощью using в $type будет равен либо disabled, либо not-disabled, после чего идет проверка
+    }
+}
+
+.button {
+    cursor: pointer;
+    padding: 5px 10px;
+
+    background-color: #e1f5f3;
+    border: 2px solid #085698;
+    border-radius: 5px;
+
+    /* & - ссылка на родительский элемент */ 
+
+    @include hover using ($type) {
+        background-color: #6dacd0;
+        @if $type == 'not-disabled' {
+            background-color: greenyellow;
+        }
+        @if $type == 'disabled' {
+            background-color: blueviolet;
+        }
+    };
+    // &:hover {
+    //     background-color: #6dacd0
+    // }
+    &:active {
+        background-color: #085698;
+        >.button__title {
+            color: #6dacd0
+        }
+    }
+    >.button__title { /* button__title - дочерний класс класса button */
+        color: #085698;
+    }
+}
+
+// mixin base example
+
+.button-size-sm {
+    @include button-size(5px, 10px, 5px, 12px); /* с помощью include включили свойства из mixin button-size-sm */
+}
+
+.button-size-md {
+    @include button-size($padding-y: 10px, $padding-x: 20px, $border-radius: 7px, $font-size: 14px); /* такой вариант записи также существует, в таком случае порядок не важен */
+
+}
+
+.button-size-lg {
+    @include button-size(15px, 35px, 10px, 18px); /* в миксинах мы можем иметь произвольное кол-во аргументов  */ 
+}
+
+// any number of args
+// трудная штука, есть и интерполяция, но это позже
+
+// @mixin button-size2($selectors...) { /* selectors - имя переменной, ... означает, что можно передавать неопределенное кол-во элементов */
+//     @for $i from 0 to length($selectors) {
+//         #{nth($selectors, $i+1)} {
+//             $mul: $i + 1;
+//             padding: 5px * $mul 10px * $mul;
+//             border-radius: 5px * $mul;
+//             > .button__title {
+//                 font-size: (12px * $mul) - 6
+//     }
+//         }
+//     }
+// }
+// @include button-size2('.button-size-sm', '.button-size-md', '.button-size-lg') // итерируем эту штуку
+
+// оба варианта допустимы и ситуативны
+
+@mixin button_type($args...) {
+    @each $name, $color in meta.keywords($args) {
+        .button-type-#{$name} {
+            border: 2px solid $color;
+            > .button__title {
+                color: $color;
+            }
+        }
+    }              /* each пробегает по аргментам */ 
+}
+
+@include button-type($succes: #080, $error: #800, $info: #085698)
+
+// этот mixin сгенерирует нам три класса

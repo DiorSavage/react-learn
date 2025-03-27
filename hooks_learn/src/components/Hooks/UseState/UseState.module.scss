@@ -1,0 +1,71 @@
+main {
+    flex-direction: column;
+
+    & > .counter {
+
+        margin-bottom: 100px;
+
+        & > .button__counter {
+            width: 100px;
+            height: 40px;
+            margin-left: 20px;
+            background-color: white;
+            cursor: pointer;
+            border: 0;
+            border-radius: 24px;
+            font-size: 16px;
+            font-weight: 600;
+            font-family: 'Ubuntu';
+            letter-spacing: 2px;
+        }
+    }
+
+    & > .input_field {
+
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+
+        & > input {
+            background-color: transparent;
+            border: 0;
+            border-bottom: 3px solid rgb(255, 255, 255);
+            padding: 15px 15px 0 2px;
+            font-size: 25px;
+            width: 350px;
+            transition: all .35s ease-in;
+        }
+        & > input:focus {
+            padding-bottom: 15px;
+            outline: none;
+        
+        }
+        & label {
+            margin: 20px;
+            letter-spacing: 5px;
+            font-size: 35px;
+            font-weight: 600;
+        }
+    }
+
+    & > .todoList {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 50px;
+        width: 900px;
+        
+        & > .component {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            width: 100%;
+            background-color: white;
+            border: 0;
+            padding: 10px;
+            height: 70px;
+            margin: 20px 0 20px;
+        }
+    }
+}

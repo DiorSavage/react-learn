@@ -1,0 +1,8 @@
+$background-color1: #00ff00;
+$background-color2: #00ffff;
+$-background-color3: #ff00ff; // сущность стала приватна и стала недоступна в местах вызова
+
+
+main {
+    background-color: $-background-color3; // можно юзать
+}

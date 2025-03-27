@@ -1,0 +1,22 @@
+$sizes: 8, 16, 32;
+
+@each $size in $sizes {
+    
+    .ml-#{$size}p {
+        margin-left: #{$size}px;
+    }
+}
+
+$types: ('success': #0f0, 'info': #00f, 'error': #f00);
+
+@each $type, $color in $types {
+    
+
+    .button-type-#{$type} {
+        border: 2px solid $color;
+
+        > .button-title {
+            color: $color;
+        }
+    }
+}

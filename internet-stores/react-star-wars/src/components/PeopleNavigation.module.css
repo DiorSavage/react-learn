@@ -1,0 +1,18 @@
+.buttons {
+    border: 2px solid var(--color-white);
+    color: var(--color-white);
+    border-radius: 2px;
+    background-color: transparent;
+    width: 150px;
+    height: 55px;
+    padding: 10px 20px;
+    font-size: 18px;
+    margin: 0 10px 0;
+    cursor: pointer;
+}
+
+.main__div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

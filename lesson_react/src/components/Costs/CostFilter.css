@@ -1,0 +1,29 @@
+.select_block {
+    width: 95%;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    
+}
+
+.selector {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+.selector select {
+    font-size: 18px;
+    width: 110px;
+    font-weight: bold;
+    border: none;
+    padding: 8px;
+}
+
+.selector p {
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    margin-left: 36px;
+}
+

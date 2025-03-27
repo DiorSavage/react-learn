@@ -1,0 +1,17 @@
+%-message { // если после % добавить _ или - то его можно будет использовать только внутри модуля
+    border-radius: 5px;
+    width: 100%;
+    height: 50px;
+
+    &:hover {
+        opacity: 1;
+    }
+}
+
+
+.message-success {
+    @extend %-message;
+    background-color: lightgreen;
+    border-color: green;
+    color: blue;
+}

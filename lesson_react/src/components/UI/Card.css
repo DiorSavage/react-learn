@@ -1,0 +1,26 @@
+.card {
+    border-radius: 15px;
+    box-shadow: 0 1 7px rgba(0, 0, 0, 0.25)
+}
+
+button {
+    height: 45px;
+    background-color: #2a5b84;
+    color: white;
+    box-shadow: 0px 0px 1px rgba(65, 44, 182, 0.25);
+    border-radius: 12px;
+    border: 1px solid white;
+    cursor: pointer;
+    font-style: italic;
+    width: 150px;
+    margin-left: 5px;
+    transition: all 0.25s ease;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: transparent;
+    margin-left: 10px;
+    scale: 1.05;
+}

@@ -1,0 +1,26 @@
+p.theme-theme1 {
+  color: #00ff00;
+}
+
+span {
+  font-size: 12px/3;
+  font-size: 4px;
+}
+
+a--modifier {
+  color: green;
+}
+
+a a--modifier {
+  color: blue;
+}
+
+.comp {
+  background-color: red;
+  font-size: 18px;
+}
+.comp .icon-computer {
+  content: "computer";
+}
+
+/*# sourceMappingURL=output_int.css.map */

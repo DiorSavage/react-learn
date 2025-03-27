@@ -1,0 +1,80 @@
+// переменные
+// sass/scss переменные не компилируется в output.css файл, а просто при использовании их заменяются
+
+// Переменные могут иметь дефолтные значения или кастомные
+
+// будет изменено начальное значения, но во избежание ошибки
+// прошлое значение нужно задекларировать как !default
+
+
+@use 'module1' as m1 with (
+    $fontColor: #cd29ff,
+    $borderRadius: 10px,
+);
+    
+@use 'sass:math' as math;
+
+:root {
+    --color: #fff;
+}
+
+$color: var(--color);
+.main {
+    background-color: $color;
+}
+
+@debug math.$pi; // в модуле math, который есть в sass, есть переменные, которыми мы можем воспользоваться
+// @debug - вывод в консоль
+
+$color1: #00ff00;
+
+.main-container {
+    background-color: $color1;
+}
+
+$font-size: 18px;
+
+.title {
+    font-size: $font-size;
+}
+
+$font-size: 20px; // изменение переменных не затронет предыдущие в .title
+
+.subtitle {
+    font-size: $font-size;
+}
+.button {
+    @include m1.button(); // импортировали модуль, в котором есть значения по умолчанию, но мы можем значения изменять
+}
+
+// область видимости переменных 
+
+$var1: 'global value'; // и так понятно
+
+.p1::before {
+    $var1: 'local value'; // и так понятно
+    content: $var1;
+}
+
+.p2::before {
+    content: $var1;
+}
+
+// динамичное переклчение тем с CSS и Javascript
+
+// --------------At rules--------------
+
+// @use, @forward       use лучше import, так как у import куча недостатков
+// @import 
+
+// @mixin @include
+// @function -- и так понятно
+// @extend --- наследование одни стили в других
+
+// @at-root помещает стили в самый верх css документа
+
+// @error, @debug, @warning ----- Service messages 
+// error останавливает компиляцию
+
+// @if, @each  генерировать стили в зависимости от условий
+// @for, @while

@@ -1,0 +1,52 @@
+@use 'sass:list';
+@use 'sass:meta';
+
+@function pow($base, $exponent) {
+    $result: 1;
+    @for $_ from 1 through $exponent {
+        $result: $result * $base;
+    }
+    @return $result;
+}
+
+.sidebar {
+    margin-left: pow(4, 3) * 1px;
+    margin-left: #{pow(4, 3)}px;
+}
+
+@function concat($str, $times, $del: ' ') {
+    $res: '';
+    @for $_ from 1 through $times {
+        @if $res == '' {
+            $res: $res + $str;
+        } @else {
+            $res: $res + $del + $str;
+        }
+    }
+    @return $res;
+}
+
+@function getMax($numbers...) {
+    $max: list.nth($numbers, 1);
+    @each $number in $numbers {
+        @if $max < $number {
+            $max: $number;
+        }
+    }
+    @return $max;
+}
+
+@debug concat('hello', 3, ' ');
+@debug concat('hello', $times: 5, $del: ' _ ');
+
+@debug getMax(10, 30, 20, 101, 533, 54, 533.1);
+
+@function concatKeywords($args...) {
+    $str: '';
+    @each $key, $value in meta.keywords($args) {
+        $str: $str + $key + ': ' + $value + '; ';
+    }
+    @return $str;
+}
+
+@debug concatKeywords($success: #080, $error: #800, $info: #085698)

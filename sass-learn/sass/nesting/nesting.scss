@@ -1,0 +1,52 @@
+// Вложенность
+
+main {
+    h1 {
+        color: #00ff00;
+    }
+    & > section { // > указывает, что это не просто потомок, а именно дочерний элемент
+        background-color: #00ff00;
+
+        .title-container {
+            border-radius: 5px;
+        }
+        .content-container {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+}
+
+// font-family ------------ эти вещи так же можно вкладывать друг в друга
+// font-size
+// font-variant
+
+// background
+// background-color
+// background-size
+// etc
+
+main {
+    background: {
+        color: green;
+        position: 50% center;
+        repeat: no-repeat;
+    }
+}
+// main {
+//     background-color: green;
+//     background-position: 50% center;
+//     background-repeat: no-repeat;
+// }
+
+main {
+    background: red {
+        position: 50% center;
+        repeat: no-repeat;
+    }
+}
+// main {
+//     background: red;
+//     background-position: 50% center;
+//     background-repeat: no-repeat;
+//   }

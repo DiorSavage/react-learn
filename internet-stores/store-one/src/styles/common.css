@@ -1,0 +1,39 @@
+:root {
+    --textColor: #000;
+    --accent: #1050da;
+    --yellow: #ebd96B;
+    --gray: #7f7f7f;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    color: var(--textColor)
+}
+
+.container {
+    max-width: 1780px;
+    margin: 0 auto;
+    padding: 0 30px;
+}
+
+
+.title-2 {
+    position: relative;
+    font-weight: 900;
+    font-size: 48px;
+    line-height: 1.04;
+    letter-spacing: 0.06em;
+}
+
+.title-2::after {
+    content: '';
+    position: absolute;
+    display: block;
+    background-image: url('./../img/icons/decor-yellow.svg');
+    background-repeat: no-repeat;
+    right: 0px;
+    left: 260px;
+    top: 8px;
+    bottom: 0px;
+    z-index: -1;
+}

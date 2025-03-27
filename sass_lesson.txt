@@ -1,0 +1,58 @@
+yarn add sass
+
+компилирование sass файла в css производится в терминале
+
+sass --watch ./компилируемый файл.scss ./в какой.css
+
+для более удобного вызова в package.json, в scripts пишем
+"sass": "node ./node_modules/sass/sass.js",
+"sass:watch": "npm run sass -- --watch ./sass/styles.scss ./sass/output.css"
+
+теперь вызов будет таким 
+npn run sass:watch
+
+Если вдруг какая то тупая ошибка, по типу Невозможно загрузить файл C:\Users\User\AppData\Roaming\npm\sass.ps1, так как выполнение сц 
+енариев отключено в этой системе. и тд, то
+
+В терминале пишем это 
+Set-ExecutionPolicy RemoteSigned -Scope Process
+теперь все ок
+
+в итоге стили, которые мы прописали в файле sass/scss компилируется в css файл с соответствующим синтаксисом
+
+mixin and include 
+
+mixin определяет стили, которые могут быть переиспользованы
+
+// импортирование
+
+создаем файл _{module_name}.scss
+допустим, напишем в нем миксин
+
+$borderRadius: 5px !default; ------ без !default изменения в другом файле невозможны
+$fontColor: #0000ff !default;
+
+@mixin button() {
+    border-radius: $borderRadius;
+    
+    .button-title {
+        font-size: 10px;
+        color: $fontColor;
+    }
+}
+чтобы импортировать это в другом файле нужно
+
+@use '{module_name}' as m1 
+
+импортирование с изменением дефолт переменных
+
+@use '{module_name}' as m1 with (
+    изменяем дефолт переменные
+)
+
+пример
+
+@use 'module1' as m1 with (
+    $fontColor: #cd29ff,
+    $borderRadius: 10px,
+);

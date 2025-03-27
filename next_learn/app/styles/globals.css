@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url(./burger.css);
+@import url(./home.module.css);
+@import url(./main.css);

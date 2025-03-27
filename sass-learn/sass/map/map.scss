@@ -1,0 +1,41 @@
+@use 'sass:map';
+
+$font-weights: ('regular': 400, 'medium': 500, 'bold': 700);
+
+@debug map.get($font-weights, 'regular'); // 400
+@debug map-has-key($map: $font-weights, $key: regula); // false нет такого ключа
+
+$lst-keys: regular medium utils;
+
+// @each $i in $lst-keys { ----- какую эе хуйню высрал, но пойдет
+//     @if(map-has-key($map: $font-weights, $key: $i)) {
+//         $font-weights: map.remove($font-weights, $i);
+//     }
+//     @debug $font-weights;
+// }
+
+@debug ('theme1': #0f0, 'theme2': #00f);
+
+$fonts: (
+    'Helvetica': (
+        'weight': (
+            'regular': 400,
+            'medium': 500,
+            'bold': 700,
+        ),
+    ),
+);
+
+$fonts-weights: (
+    'regular': 400,
+    'medium': 500,
+    'bold': 700,
+);
+
+@debug map.get($font-weights, 'medium');
+@debug map.set($font-weights, 'light', 100);
+@debug map.set($font-weights, 'medium', 550);
+@debug $font-weights; // изменений нет, тема связана с иммутабельностью, так что....
+$font-weights: map.set($font-weights, 'medium', 550); // изменения будут
+$font-weights: map.set($font-weights, 'light', 100);
+@debug $font-weights;

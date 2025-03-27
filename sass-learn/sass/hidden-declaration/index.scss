@@ -1,0 +1,31 @@
+// Как скрыть свойство Sass по условию
+
+// if($condition, $if-true, $if-false)
+.button {
+    border: 1px solid green;
+    border-radius: null; // не будет выведено в output
+}
+
+@debug if(2 * 2 == 4, 1, 2);
+@debug if(2 * 2 == 5, 1, 2);
+
+$rounded: false;
+
+.button {
+    border: 1px solid green;
+    border-radius: if($rounded, 5px, null);
+}
+
+@mixin app-background($color) {
+    #{if(&, '&.app-background', '.app-background')}{ // проверка на родителя, если include в каком-то классе, то будет {родитель}.app-background, если нет, то будет отдельный класс .app-background
+        // если убрать в &.app-background &, то будет .sidebar .app-background (дочерний элемент, а не частью элемента
+        background-color: $color;
+        color: #fff;
+    }
+}
+
+.sidebar {
+    @include app-background(green);
+}
+
+@include app-background(red);
