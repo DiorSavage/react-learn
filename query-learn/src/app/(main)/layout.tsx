@@ -5,6 +5,9 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
 	return (
 		<ReduxProvider>
 			<TanstackProvider>
+				<header>
+					america
+				</header>
 				<main>
 					{children}
 				</main>
