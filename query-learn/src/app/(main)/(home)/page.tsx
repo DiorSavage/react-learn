@@ -1,8 +1,9 @@
 "use client"
 
-import { useQuery, keepPreviousData } from '@tanstack/react-query'
-import { getAllOrders, getAllProducts, getAllUsers } from '@shared/api/api'
-import { useState } from 'react'
+import { useQuery, keepPreviousData, useInfiniteQuery } from '@tanstack/react-query'
+import { getAllOrders, getAllProducts, getAllProductsQueryOptions, getAllUsers } from '@shared/api/api'
+import { useCallback, useRef, useState } from 'react'
+import { jsonApiInstance } from '@/shared/api/api-instance'
 
 type Todo = {
 	id: number;
@@ -50,15 +51,45 @@ const HomePage = () => {
 	const [enabled, setEnable] = useState<boolean>(true)
 
 	// const { data: ProductsData, isSuccess: ProductsIsSuccess } = useQuery({ queryKey: ['products', pageNumber], queryFn: () => getAllProducts({ start: pageNumber.start, end: pageNumber.end }), placeholderData: [] })]
+
+	//? queryOptions - аля закидываем все в одно, из одного импортируем все в useQuery с помощью спред оператора. Также есть infiniteQueryOptions для useInfiniteQuery
+	// const getAllProductsQueryOptions = ( pageNumber: { start: number, end: number } ) => {
+	// 	return queryOptions({
+	// 		queryKey: ['products', pageNumber], 
+	// 		queryFn:  () => getAllProducts({ pageParam: pageNumber.end }),
+	// 		placeholderData: keepPreviousData, 
+	// 	})
+
+	// const { data: ProductsData, isSuccess: ProductsIsSuccess, isFetching, isLoading, isPending, status, fetchStatus } = useQuery({ 
+	// 	...getAllProductsQueryOptions({ ...pageNumber }),
+	// 	enabled: enabled 
+	// })
 	
-	const { data: ProductsData, isSuccess: ProductsIsSuccess, isFetching, isLoading, isPending, status, fetchStatus } = useQuery({ queryKey: ['products', pageNumber], queryFn: () => getAllProducts({ start: 0, end: pageNumber.end }), placeholderData: keepPreviousData, enabled: enabled }) //? placeholderData - данные дефолтные, пока идет запрос, для медленного инета помогает. В placeholderData можно еще прокидывать функции
+	// const { data: ProductsData, isSuccess: ProductsIsSuccess, isFetching, isLoading, isPending, status, fetchStatus } = useQuery({ 
+	// 	queryKey: ['products', pageNumber], 
+	// 	queryFn:  () => getAllProducts({ pageParam: pageNumber.end }), placeholderData: keepPreviousData, 
+	// 	enabled: enabled 
+	// })
+
+	const { data: ProductsData, isSuccess: ProductsIsSuccess, isFetching, isLoading, isPending, status, fetchStatus } = useQuery({ 
+		queryKey: ['products', pageNumber], 
+		queryFn:  (meta) => jsonApiInstance(`products/?end=${pageNumber.end}`)(),
+		placeholderData: keepPreviousData, 
+		enabled: enabled 
+	})
+	
+	//? placeholderData - данные дефолтные, пока идет запрос, для медленного инета помогает. В placeholderData можно еще прокидывать функции
 	//? Также в placeholderData можно прокинуть keepPreviousData, который показывает предыдущие данные, пока идет запрос
 	//? isPlaceholderData - для placeholderData имба, вместо того же isFetching
 	//? initialData - примеры: приходит из localStorage, preFetch в SSR - пойдет в кеш ( наполнение кеша из другого источника, для SSR имба вещь )
 	//? enabled - декларативно выключает/включает запрос
-
-	console.log(`isLoading: ${isLoading}, isFetching: ${isFetching}, isPending: ${isPending}, status: ${status}, fetchStatus: ${fetchStatus}`)
-
+	//? select - изменяет данные перед возвращанием, аля transformResponse в RTKQuery
+	// const { data: ProductsData, isPending, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
+	// 	queryKey: ["products", "nextCursor"], queryFn: ({ pageParam = 2 }) => getAllProducts({ pageParam }), enabled: enabled, initialPageParam: 2, getNextPageParam: (lastPage, pages) => {
+	// 		return lastPage.nextCursor
+	// 	}, select: result => result.pages.flat()
+	// })
+	console.log(ProductsData)
 	const { data, isError, isPending: UserPending, isSuccess } = useQuery({ queryKey: ['tasks', 'list'], queryFn: getAllUsers }) //? queryKey - помогает отличать запросы друг от друга, 
 	if (isPending) {
 		return <div className="flex justify-center items-center h-screen text-xl">Loading...</div>
@@ -66,6 +97,22 @@ const HomePage = () => {
 	if (isSuccess) {
 		return (
 			<>
+			{/* useInfiniteQuery */}
+				{/* <div className='flex flex-col gap-y-5 px-10 py-5 bg-gray-100 rounded-lg shadow-md'>
+					{ProductsData ? ProductsData.map(product => (
+						<div key={product.id} className={`flex flex-col gap-y-3 p-4 bg-white rounded-lg shadow-sm`}>
+							<span className='font-semibold text-lg'>Product Name: <span className='font-normal'>{product.name}</span></span>
+							<span className='font-semibold text-lg'>Price: <span className='font-normal'>${product.price}</span></span>
+							<span className='font-semibold text-lg'>Description: <span className='font-normal'>{product.description}</span></span>
+						</div>
+					)) : <div>Loading...</div>}
+					<button disabled={!enabled} onClick={() => 
+						fetchNextPage()
+					} className='px-4 py-2 cursor-pointer disabled:cursor-default disabled:bg-[#00000054] bg-blue-500 text-white rounded hover:bg-blue-600'>
+						Next Page
+					</button>
+				</div> */}
+				{/* useQuery */}
 				<div className='flex flex-col gap-y-5 px-10 py-5 bg-gray-100 rounded-lg shadow-md'>
 					{data.map(user => {
 						return (
@@ -121,3 +168,25 @@ const HomePage = () => {
 }
 
 export default HomePage
+
+//! че за гавно, разобраться
+// export function useIntersection(onIntersect: () => void) {
+
+// 	const unsubscribe = useRef(() => {})
+
+// 	return useCallback((el: HTMLDivElement | null) => {
+// 		const observer = new IntersectionObserver((entries) => {
+// 			entries.forEach(intersection => {
+// 				if (intersection.isIntersecting) {
+// 					onIntersect()
+// 				}
+// 			})
+// 		})
+// 		if (el) {
+// 			observer.observe(el)
+// 			unsubscribe.current = () => observer.disconnect()
+// 		} else {
+// 			unsubscribe.current()
+// 		}
+// 	}, [])
+// }

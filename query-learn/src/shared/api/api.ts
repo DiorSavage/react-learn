@@ -1,7 +1,9 @@
 "use server"
 
-import type { UserAllType } from '@/types/users.type'
+import { CreateOrderType, IOrder } from '@/types/orders.type'
 import type { ProductAllType } from '@/types/products.type'
+import type { UserAllType } from '@/types/users.type'
+import { ApiError } from 'next/dist/server/api-utils'
 
 // export const usersListApi = {
 // 	getAllUsers: async (): Promise<UserAllType[]> => {
@@ -14,6 +16,38 @@ import type { ProductAllType } from '@/types/products.type'
 // 	}
 // }
 
+export const getAllOrders = async (): Promise<IOrder[]> => {
+	const response = await fetch(`${process.env.BASE_URL_API}orders`,
+		{
+			headers: {
+				"Content-Type": "application/json"
+			}
+		}
+	)
+	const data = await response.json()
+	return data
+}
+
+export const createNewOrder = async ({ newOrder }: { newOrder: CreateOrderType }) => {
+	const response =  await fetch(`${process.env.BASE_URL_API}orders/create`, {
+		method: "POST",
+		body: JSON.stringify(newOrder),
+		headers: {
+			"Content-Type": "application/json"
+		}
+	})
+
+	if (response.status !== 200) {
+		console.log(response.status, response.text)
+	}
+	console.log(response)
+
+	return response
+}
+
+// export const updateOrder = async () => {}
+// export const deleteOrder = async () => {}
+
 export const getAllUsers = async ({ abortSignal }: { abortSignal: AbortSignal }): Promise<UserAllType[]> => { //? abortSignal - отменяет запрос
 	const response = await fetch(`${process.env.BASE_URL_API}auth-jwt-users/`, {
 		signal: abortSignal,
@@ -24,8 +58,16 @@ export const getAllUsers = async ({ abortSignal }: { abortSignal: AbortSignal })
 	return response.json()
 }
 
-export const getAllProducts = async ({ start = 0, end = 0, signal }: { signal: AbortSignal, start: number, end: number }): Promise<ProductAllType[]> => {
-	const response = await fetch(`${process.env.BASE_URL_API}products/?start=${start}&end=${end}`, {
+// export const getAllProductsQueryOptions = ( pageNumber: { start: number, end: number } ) => {
+// 	return queryOptions({
+// 		queryKey: ['products', pageNumber], 
+// 		queryFn:  () => getAllProducts({ pageParam: pageNumber.end }),
+// 		placeholderData: keepPreviousData, 
+// 	})
+// }
+
+export const getAllProducts = async ({ pageParam, signal }: { signal?: AbortSignal, pageParam?: number }): Promise<ProductAllType[]> => {
+	const response = await fetch(`${process.env.BASE_URL_API}products/?end=${pageParam}`, {
 		// signal: signal,
 		headers: {
 			"Content-Type": "application/json"
@@ -34,7 +76,7 @@ export const getAllProducts = async ({ start = 0, end = 0, signal }: { signal: A
 	return response.json()
 }
 
-export const getAllOrders = async ({ signal }: { signal: AbortSignal }) => {
+export const getAllOrdersRedis = async ({ signal }: { signal: AbortSignal }) => {
 	const response1 = await fetch(`${process.env.BASE_URL_API}redis-learn/orders/`, {
 		headers: {
 			"Content-Type": "application/json",
