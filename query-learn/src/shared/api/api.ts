@@ -40,17 +40,26 @@ export const createNewOrder = async ({ newOrder }: { newOrder: CreateOrderType }
 	if (response.status !== 200) {
 		console.log(response.status, response.text)
 	}
-	console.log(response)
-
-	return response
+	const data = await response.json()
+	return data
 }
 
 // export const updateOrder = async () => {}
 // export const deleteOrder = async () => {}
 
-export const getAllUsers = async ({ abortSignal }: { abortSignal: AbortSignal }): Promise<UserAllType[]> => { //? abortSignal - отменяет запрос
+export const getAllUsers = async ({ abortSignal }: { abortSignal?: AbortSignal }): Promise<UserAllType[]> => { //? abortSignal - отменяет запрос
 	const response = await fetch(`${process.env.BASE_URL_API}auth-jwt-users/`, {
 		signal: abortSignal,
+		headers: {
+			"Content-Type": "application/json"
+		}
+	})
+	return response.json()
+}
+
+export const deleteOrder = async ({ order_id }: { order_id: number }): Promise<string> => {
+	const response = await fetch(`${process.env.BASE_URL_API}orders/delete/${order_id}`, {
+		method: "DELETE",
 		headers: {
 			"Content-Type": "application/json"
 		}

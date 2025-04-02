@@ -9,6 +9,10 @@ export const queryClient = new QueryClient({
 	},
 })
 
+// queryClient.invalidateQueries() //? апдейт данных
+// queryClient.getQueryData(<queryKey>) //? получание данных с кэша
+// queryClient.setQueryData(<querykey>, <new_cache_data>) //? обновление кэша
+
 //? эти штуки убирают повторные запросы при взятии данных из кеша, точнее определяют, через сколько их делать. staleTime по дефолту 0, а значит будут браться, установив минуту такого не будет
 
 //* staletime - время устаревания данных

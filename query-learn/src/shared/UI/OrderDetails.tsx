@@ -1,6 +1,9 @@
 import { IOrder } from '@/types/orders.type'
+import type { UseMutationResult } from '@tanstack/react-query'
 
-const OrderDetails = ({ order }: { order: IOrder }) => {
+const OrderDetails = ({ order, deleteOrderMutation }: { order: IOrder, deleteOrderMutation: UseMutationResult<string, Error, {
+  order_id: number;
+}, unknown> }) => {
 
 	const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
@@ -12,10 +15,19 @@ const OrderDetails = ({ order }: { order: IOrder }) => {
       minute: "2-digit",
     });
   };
-
+  const handleDelete = () => {
+    const elem = document.getElementById(`order_${order.id}`) as HTMLDivElement
+    elem.classList.add("opacity-0")
+    setTimeout(() => {
+      elem.classList.add("hidden")
+      deleteOrderMutation.mutate({ order_id: order.id })
+    }, 300);
+  }
+  // deleteOrderMutation.variables //? хранит состояния текущей мутации
+  
 	return (
-    <div className="max-w-2xl mx-auto mt-8 bg-white shadow-lg rounded-lg overflow-hidden">
-      <div className="bg-gray-100 px-6 py-4">
+    <div id={`order_${order.id}`} className={"transition-all duration-300 flex flex-col items-center max-w-2xl mx-auto mt-8 bg-white shadow-lg rounded-lg"}>
+      <div className="bg-gray-100 px-6 py-4 w-full">
         <h2 className="text-xl font-bold text-gray-800">Заказ №{order.id}</h2>
       </div>
       <div className="px-6 py-4 space-y-2">
@@ -63,6 +75,7 @@ const OrderDetails = ({ order }: { order: IOrder }) => {
           ))}
         </ul>
       </div>
+      <button onClick={handleDelete} className='w-1/3 h-12 mt-auto mb-3 cursor-pointer rounded-md bg-red-500 transition-all duration-300 hover:bg-white text-white hover:text-red-500'>Delete</button>
     </div>
   );
 }

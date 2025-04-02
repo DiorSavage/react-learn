@@ -1,11 +1,31 @@
 "use client"
 
-import { CreateOrderType } from '@/types/orders.type'
+import type { CreateOrderType } from '@/types/orders.type'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import type { Dispatch, SetStateAction } from 'react'
 import { useState } from 'react'
 import { createNewOrder } from '../api/api'
 
-const CreateOrder = () => {
+const CreateOrder = ({ setIsOpenCreateOrder }: { setIsOpenCreateOrder: Dispatch<SetStateAction<boolean>> }) => {
+
+  //? mutation optimistic updatex
+  // useMutation({
+  //   mutationFn: func,
+  //   onMutate: async (newData) => { //! вызывается перед мутацией
+  //     //? отменяем рефетчи
+  //     queryClient.cancelQueries({ queryKey: ["<key_of_data>"] })
+  //     const prevData = queryClient.getQueryData(["<key_of_data>"])
+  //     queryClient.setQueryData(["<key_of_data>"], {...prevData, newData})
+  //     return { prevData } //? возвращаем в context ( в контексте )
+  //   },
+  //   onError: (err, newData, context) => {
+  //     queryClient.setQueryData(["<key_of_data>"], context?.prevData) //! при ошибке все откатываем до прошлого кэша
+  //   },
+  //   onSettled: () => {
+  //     queryClient.invalidateQueries({ queryKey: ["<key_of_data>"] }) //? инваидируем запросы
+  //   }
+  // })
+  //* Общий прикол: перед мутацией меняем кэш на новый, при ошибке все откатываем, а когда все ок просто invalidate данные
 
 	const [promocode, setPromocode] = useState<string>("");
   const [userId, setUserId] = useState<number>(0);
@@ -13,13 +33,77 @@ const CreateOrder = () => {
   const [selectedProducts, setSelectedProducts] = useState<string>("");
 	const queryClient = useQueryClient() //? - тут весь кэш нашего приложения
 	const createOrderMutation = useMutation({
-		mutationKey: ["orderMutation"], //? нужен, если нужно узнать статус мутации из другого компонента
+		// mutationKey: ["orderMutation"], //? нужен, если нужно узнать статус мутации из другого компонента
 		mutationFn: createNewOrder,
-		onSuccess: () => {
-			console.log('nigger')
-			queryClient.invalidateQueries({ queryKey: ["orders"] }) //? - помечает все запросы по ключу в stale и перезапрашивает, без параметров рефетчит все, при указывании ключей можем указать частично ( аля смотрит начинается на <переданный ключ>)
-		}
+		onSuccess: async () => {
+      console.log('zaebis')
+      setIsOpenCreateOrder(false)
+			await queryClient.invalidateQueries({ queryKey: ["orders"] }) //? - помечает все запросы по ключу в stale и перезапрашивает, без параметров рефетчит все, при указывании ключей можем указать частично ( аля смотрит начинается на <переданный ключ>)
+		},
+    onError: (error, context) => {
+      console.log(error)
+    },
+    onSettled: (data) => { //? и при ошибке, и при success вызывается
+      console.log(data)
+    }
 	})
+  //? optimistic update
+  // const createOrderMutation = useMutation({
+  //   mutationFn: createNewOrder,
+  //   onMutate: async ( newOrder ) => {
+  //     queryClient.cancelQueries({ queryKey: ["orders"] })
+  //     const prevData = queryClient.getQueryData(["orders"]) as CreateOrderType[]
+  //     console.log(newOrder)
+  //     queryClient.setQueryData(["orders"], [ ...prevData, { ...newOrder.newOrder } ]) //? в products у newData чисто массив из айдишников, нужен массив из данных продуктов
+      
+  //     return prevData
+  //   },
+  //   onError: (err, newData, context) => {
+  //     console.log(`Error: ${err}\nnewData: ${newData}`)
+  //   },
+  //   onSettled: () => {
+  //     queryClient.invalidateQueries({ queryKey: ["orders"] })
+  //   }
+  // })
+
+  //! DELETE
+  // const deleteOrderMutation = useMutation({
+	// 	mutationFn: deleteOrder,
+	// 	onSuccess: async (data, deletedId) => {
+  //     console.log('zaebis')
+  //     setIsOpenCreateOrder(false)
+	// 		await queryClient.invalidateQueries({ queryKey: ["orders"] })
+	// 	},
+  //   onError: (error, context) => {
+  //     console.log(error)
+  //   },
+  //   onSettled: (data) => {
+  //     console.log(data)
+  //   }
+	// })
+  //? USE
+  // deleteOrderMutation.mutate({
+  //   id: <id>
+  // })
+  //! UPDATE
+  // const updateOrderMutation = useMutation({
+	// 	mutationFn: updateOrder,
+	// 	onSuccess: async () => {
+  //     console.log('zaebis')
+  //     setIsOpenCreateOrder(false)
+	// 		await queryClient.invalidateQueries({ queryKey: ["orders"] })
+	// 	},
+  //   onError: (error, context) => {
+  //     console.log(error)
+  //   },
+  //   onSettled: (data) => {
+  //     console.log(data)
+  //   }
+	// })
+  //? USE
+  // deleteOrderMutation.mutate({
+  //   updatedOrder: updatedOrder
+  // })
 
 	//? onSuccess: (data, variables) => {
 	//? 	refetch() - refetch из запроса, в котором нужно делать обновления, но есть варик получше
@@ -32,6 +116,7 @@ const CreateOrder = () => {
       user_id: userId,
       order_price: 100000,
       products_id: selectedProducts.split(",").map(id => Number(id)),
+      created_at: new Date().toISOString()
     };
 		const response = createOrderMutation.mutate({ newOrder: formData }) //? не асинхронная, не выбрасывает ошибку при неудаче, заебись
 		// createOrderMutation.mutateAsync() //? асинхронная, не особо заебись, ибо придется оборачивать в try catch, чтобы отлавливать ошибки

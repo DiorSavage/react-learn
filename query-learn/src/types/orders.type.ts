@@ -13,5 +13,6 @@ export type CreateOrderType = {
 	promocode: string | null;
 	user_id: number;
 	order_price: number;
-	products_id: number[]
+	products_id: number[];
+	created_at: string;
 }

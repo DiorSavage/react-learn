@@ -1,7 +1,7 @@
 "use client"
 
 import { useQuery, keepPreviousData, useInfiniteQuery } from '@tanstack/react-query'
-import { getAllOrders, getAllProducts, getAllProductsQueryOptions, getAllUsers } from '@shared/api/api'
+import { getAllOrders, getAllProducts, getAllUsers } from '@shared/api/api'
 import { useCallback, useRef, useState } from 'react'
 import { jsonApiInstance } from '@/shared/api/api-instance'
 
@@ -65,18 +65,18 @@ const HomePage = () => {
 	// 	enabled: enabled 
 	// })
 	
-	// const { data: ProductsData, isSuccess: ProductsIsSuccess, isFetching, isLoading, isPending, status, fetchStatus } = useQuery({ 
-	// 	queryKey: ['products', pageNumber], 
-	// 	queryFn:  () => getAllProducts({ pageParam: pageNumber.end }), placeholderData: keepPreviousData, 
-	// 	enabled: enabled 
-	// })
-
 	const { data: ProductsData, isSuccess: ProductsIsSuccess, isFetching, isLoading, isPending, status, fetchStatus } = useQuery({ 
 		queryKey: ['products', pageNumber], 
-		queryFn:  (meta) => jsonApiInstance(`products/?end=${pageNumber.end}`)(),
-		placeholderData: keepPreviousData, 
+		queryFn:  () => getAllProducts({ pageParam: pageNumber.end }), placeholderData: keepPreviousData, 
 		enabled: enabled 
 	})
+
+	// const { data: ProductsData, isSuccess: ProductsIsSuccess, isFetching, isLoading, isPending, status, fetchStatus } = useQuery({ 
+	// 	queryKey: ['products', pageNumber], 
+	// 	queryFn:  (meta) => jsonApiInstance(`products/?end=${pageNumber.end}`)(),
+	// 	placeholderData: keepPreviousData, 
+	// 	enabled: enabled 
+	// })
 	
 	//? placeholderData - данные дефолтные, пока идет запрос, для медленного инета помогает. В placeholderData можно еще прокидывать функции
 	//? Также в placeholderData можно прокинуть keepPreviousData, который показывает предыдущие данные, пока идет запрос
@@ -89,7 +89,6 @@ const HomePage = () => {
 	// 		return lastPage.nextCursor
 	// 	}, select: result => result.pages.flat()
 	// })
-	console.log(ProductsData)
 	const { data, isError, isPending: UserPending, isSuccess } = useQuery({ queryKey: ['tasks', 'list'], queryFn: getAllUsers }) //? queryKey - помогает отличать запросы друг от друга, 
 	if (isPending) {
 		return <div className="flex justify-center items-center h-screen text-xl">Loading...</div>
