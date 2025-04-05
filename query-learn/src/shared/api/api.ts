@@ -2,8 +2,9 @@
 
 import { CreateOrderType, IOrder } from '@/types/orders.type'
 import type { ProductAllType } from '@/types/products.type'
-import type { UserAllType } from '@/types/users.type'
+import type { UserAllType, UserLoginFormData, UserLoginType } from '@/types/users.type'
 import { ApiError } from 'next/dist/server/api-utils'
+
 
 // export const usersListApi = {
 // 	getAllUsers: async (): Promise<UserAllType[]> => {
@@ -16,6 +17,57 @@ import { ApiError } from 'next/dist/server/api-utils'
 // 	}
 // }
 
+
+//? ProductsApi
+export const getAllProducts = async ({ pageParam, signal }: { signal?: AbortSignal, pageParam?: number }): Promise<ProductAllType[]> => {
+	const response = await fetch(`${process.env.BASE_URL_API}products/?end=${pageParam}`, {
+		// signal: signal,
+		headers: {
+			"Content-Type": "application/json"
+		}
+	})
+	return response.json()
+}
+
+// export const getAllProductsQueryOptions = ( pageNumber: { start: number, end: number } ) => {
+// 	return queryOptions({
+// 		queryKey: ['products', pageNumber], 
+// 		queryFn:  () => getAllProducts({ pageParam: pageNumber.end }),
+// 		placeholderData: keepPreviousData, 
+// 	})
+// }
+
+//? UserApi
+export const getAllUsers = async ({ abortSignal }: { abortSignal?: AbortSignal }): Promise<UserAllType[]> => { //? abortSignal - отменяет запрос
+	const response = await fetch(`${process.env.BASE_URL_API}auth-jwt-users/`, {
+		signal: abortSignal,
+		headers: {
+			"Content-Type": "application/json"
+		}
+	})
+	return response.json()
+}
+
+export const loginUser = async (userData: UserLoginFormData): Promise<UserLoginType> => {
+	const response = await fetch(`${process.env.BASE_URL_API}auth-jwt-users/login`, {
+		method: "POST",
+		credentials: "include",
+		headers: {
+			"Content-Type": "application/json"
+		},
+		body: JSON.stringify(userData)
+	})
+
+	if (!response.ok) {
+		console.log(`Error: ${response.text}`)
+		return response.json()
+	}
+	const data = await response.json()
+	console.log(data)
+	return data
+}
+
+//? OrderApi
 export const getAllOrders = async (): Promise<IOrder[]> => {
 	const response = await fetch(`${process.env.BASE_URL_API}orders`,
 		{
@@ -47,37 +99,9 @@ export const createNewOrder = async ({ newOrder }: { newOrder: CreateOrderType }
 // export const updateOrder = async () => {}
 // export const deleteOrder = async () => {}
 
-export const getAllUsers = async ({ abortSignal }: { abortSignal?: AbortSignal }): Promise<UserAllType[]> => { //? abortSignal - отменяет запрос
-	const response = await fetch(`${process.env.BASE_URL_API}auth-jwt-users/`, {
-		signal: abortSignal,
-		headers: {
-			"Content-Type": "application/json"
-		}
-	})
-	return response.json()
-}
-
 export const deleteOrder = async ({ order_id }: { order_id: number }): Promise<string> => {
 	const response = await fetch(`${process.env.BASE_URL_API}orders/delete/${order_id}`, {
 		method: "DELETE",
-		headers: {
-			"Content-Type": "application/json"
-		}
-	})
-	return response.json()
-}
-
-// export const getAllProductsQueryOptions = ( pageNumber: { start: number, end: number } ) => {
-// 	return queryOptions({
-// 		queryKey: ['products', pageNumber], 
-// 		queryFn:  () => getAllProducts({ pageParam: pageNumber.end }),
-// 		placeholderData: keepPreviousData, 
-// 	})
-// }
-
-export const getAllProducts = async ({ pageParam, signal }: { signal?: AbortSignal, pageParam?: number }): Promise<ProductAllType[]> => {
-	const response = await fetch(`${process.env.BASE_URL_API}products/?end=${pageParam}`, {
-		// signal: signal,
 		headers: {
 			"Content-Type": "application/json"
 		}

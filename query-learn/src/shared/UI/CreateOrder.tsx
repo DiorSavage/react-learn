@@ -54,12 +54,13 @@ const CreateOrder = ({ setIsOpenCreateOrder }: { setIsOpenCreateOrder: Dispatch<
   //     queryClient.cancelQueries({ queryKey: ["orders"] })
   //     const prevData = queryClient.getQueryData(["orders"]) as CreateOrderType[]
   //     console.log(newOrder)
-  //     queryClient.setQueryData(["orders"], [ ...prevData, { ...newOrder.newOrder } ]) //? в products у newData чисто массив из айдишников, нужен массив из данных продуктов
+  //     queryClient.setQueryData(["orders"], [ ...prevData, { ...newOrder.newOrder, products: newOrder.newOrder..products_details } ]) //? в products у newData чисто массив из айдишников, нужен массив из данных продуктов
       
-  //     return prevData
+  //     return { prevData }
   //   },
-  //   onError: (err, newData, context) => {
-  //     console.log(`Error: ${err}\nnewData: ${newData}`)
+    // onError: (err, newData, context) => {
+    //   console.log(`Error: ${err}\newData: ${newData}`)
+    //   queryClient.setQueryData(["orders"], context.prevData)
   //   },
   //   onSettled: () => {
   //     queryClient.invalidateQueries({ queryKey: ["orders"] })
