@@ -16,6 +16,8 @@ const initialState: UserLoginType = {
 	}
 }
 
+//! сюда лучше сохранять айди пользователя, чтобы делать запрос, потому что в любом случае должно быть обновление данных с апи, куда передается тот же токен
+
 const userSlice = createSlice({
 	name: "userSlice",
 	initialState,
@@ -43,4 +45,5 @@ const userSlice = createSlice({
 	}
 })
 
+//? slice.injectInto(rootReducer)
 export const { actions, reducer } = userSlice

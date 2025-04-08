@@ -2,10 +2,25 @@
 
 import { queryClient } from '@/shared/api/QueryClient'
 import { useAppSelector } from '@/shared/hooks/hooks'
+import { useQuery } from '@tanstack/react-query'
 
 const ProfilePage = () => {
 
 	const { user, tokens } = useAppSelector(state => state.userSlice)
+  const { data } = useQuery({
+    queryKey: ['userData'],
+    queryFn: async () => {
+      const response = await fetch(`http://localhost:8000/auth-jwt-users/profile`, {
+        credentials: "include",
+        headers: {
+          "content-type": "application/json"
+        }
+      })
+      const data = await response.json()
+      return data
+    }
+  })
+  console.log(data)
 
 	return (
 		<section>

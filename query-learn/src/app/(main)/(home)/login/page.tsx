@@ -1,27 +1,21 @@
 "use client"
 
-import { loginUser } from '@/shared/api/api'
+import { actions as userActions } from '@/store/slices/user.slice'
 import { queryClient } from '@/shared/api/QueryClient'
 import { useAppDispatch } from '@/shared/hooks/hooks'
-import { UserLoginType } from '@/types/users.type'
 import { useMutation } from '@tanstack/react-query'
+import { UserLoginType } from '@/types/users.type'
+import { loginUser } from '@/shared/api/api'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { actions as userActions } from '@/store/slices/user.slice'
 
 const LoginPage = () => {
 
 	const [userData, setUserData] = useState<{ email: string; password: string }>({ email: "", password: "" })
 	const dispatch = useAppDispatch()
 	const router = useRouter()
-	const loginMutation = useMutation({
+	const { data, isPending, mutate: loginMutation } = useMutation({
 		mutationFn: loginUser,
-		// onMutate: async ( newUserData ) => {
-		// 	queryClient.cancelQueries({ queryKey: ["userData"] })
-		// 	const prevUserData = queryClient.getQueryData(["userData"])
-		// 	queryClient.setQueryData(["userData"], newUserData)
-		// 	return { prevUserData }
-		// },
 		onError: (err, _, context) => {
 			queryClient.cancelQueries({ queryKey: ["userData"] })
 			console.log(`Error: ${err}`)
@@ -31,20 +25,21 @@ const LoginPage = () => {
 			return data
 		},
 		onSuccess: ( data ) => {
-			router.push("/profile")
+			// router.push("/profile")
 			dispatch(userActions.setUser(data))
-			localStorage.setItem("querylearnfstkey", `${data.tokens.token_type} ${data.tokens.access_token}`)
+			localStorage.setItem("fstfastapitoken", `${data.tokens.token_type} ${data.tokens.access_token}`)
 			return data
-		}
+		},
 	})
 
 	const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
-		const response = loginMutation.mutate(userData)
+		loginMutation(userData)
 	}
 
 	return (
 		<section className='w-full flex items-center h-[100vh] justify-center'>
+			{isPending ? <div>...Loading</div> : <div>{data?.user.email}</div>}
 			<form onSubmit={handleLogin} className='w-1/5 h-2/3 flex flex-col gap-y-5 items-center'>
 				<div className='flex flex-col gap-y-1 w-full'>
 					<label htmlFor="email" className="block text-sm font-medium text-gray-700">

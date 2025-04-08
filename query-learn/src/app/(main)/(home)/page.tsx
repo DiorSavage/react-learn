@@ -48,6 +48,7 @@ const HomePage = () => {
 		end: 2
 	})
 
+
 	const [enabled, setEnable] = useState<boolean>(true)
 
 	// const { data: ProductsData, isSuccess: ProductsIsSuccess } = useQuery({ queryKey: ['products', pageNumber], queryFn: () => getAllProducts({ start: pageNumber.start, end: pageNumber.end }), placeholderData: [] })]
@@ -93,6 +94,7 @@ const HomePage = () => {
 	if (isPending) {
 		return <div className="flex justify-center items-center h-screen text-xl">Loading...</div>
 	}
+	console.log(ProductsData)
 	if (isSuccess) {
 		return (
 			<>

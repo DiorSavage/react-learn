@@ -51,9 +51,10 @@ export const getAllUsers = async ({ abortSignal }: { abortSignal?: AbortSignal }
 export const loginUser = async (userData: UserLoginFormData): Promise<UserLoginType> => {
 	const response = await fetch(`${process.env.BASE_URL_API}auth-jwt-users/login`, {
 		method: "POST",
-		credentials: "include",
+		// credentials: "include",
 		headers: {
-			"Content-Type": "application/json"
+			"Content-Type": "application/json",
+			"accept": "application/json"
 		},
 		body: JSON.stringify(userData)
 	})
@@ -63,7 +64,7 @@ export const loginUser = async (userData: UserLoginFormData): Promise<UserLoginT
 		return response.json()
 	}
 	const data = await response.json()
-	console.log(data)
+	console.log(response.headers)
 	return data
 }
 

@@ -35,6 +35,22 @@ export default function RootLayout({
   );
 }
 
+//? HOC - обертка, которую можно юзать к определенным компонентам
+// hoc/withGlobalFunction.js
+// import { useEffect } from 'react';
+
+// const withGlobalFunction = (WrappedComponent) => {
+//   return (props) => {
+//     useEffect(() => {
+//       console.log('Эта функция выполняется в каждом компоненте с HOC');
+//     }, []);
+
+//     return <WrappedComponent {...props} />;
+//   };
+// };
+
+// export default withGlobalFunction;
+
 //todo package.json
 //? "dev": "concurrently \"npm run dev:*\"", - запуск сразу нескольких
 //? "dev:client": "next dev --turbopack",
