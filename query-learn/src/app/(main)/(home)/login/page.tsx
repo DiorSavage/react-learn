@@ -2,44 +2,53 @@
 
 import { actions as userActions } from '@/store/slices/user.slice'
 import { queryClient } from '@/shared/api/QueryClient'
-import { useAppDispatch } from '@/shared/hooks/hooks'
+import { useAppDispatch, useAppSelector } from '@/shared/hooks/hooks'
 import { useMutation } from '@tanstack/react-query'
 import { UserLoginType } from '@/types/users.type'
 import { loginUser } from '@/shared/api/api'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { loginThunk } from './loginThunk'
 
 const LoginPage = () => {
 
 	const [userData, setUserData] = useState<{ email: string; password: string }>({ email: "", password: "" })
 	const dispatch = useAppDispatch()
+	const user = useAppSelector(state => state.userSlice)
 	const router = useRouter()
-	const { data, isPending, mutate: loginMutation } = useMutation({
-		mutationFn: loginUser,
-		onError: (err, _, context) => {
-			queryClient.cancelQueries({ queryKey: ["userData"] })
-			console.log(`Error: ${err}`)
-		},
-		onSettled: (data) => {
-			queryClient.invalidateQueries({ queryKey: ["userData"] })
-			return data
-		},
-		onSuccess: ( data ) => {
-			// router.push("/profile")
-			dispatch(userActions.setUser(data))
-			localStorage.setItem("fstfastapitoken", `${data.tokens.token_type} ${data.tokens.access_token}`)
-			return data
-		},
-	})
+	// const { data, isPending, mutate: loginMutation } = useMutation({
+	// 	mutationFn: loginUser,
+	// 	onError: (err, _, context) => {
+	// 		queryClient.cancelQueries({ queryKey: ["userData"] })
+	// 		console.log(`Error: ${err}`)
+	// 	},
+	// 	onSettled: (data) => {
+	// 		queryClient.invalidateQueries({ queryKey: ["userData"] })
+	// 		return data
+	// 	},
+	// 	onSuccess: ( data ) => {
+	// 		// router.push("/profile")
+	// 		dispatch(userActions.setUser(data))
+	// 		localStorage.setItem("fstfastapitoken", `${data.tokens.token_type} ${data.tokens.access_token}`)
+	// 		return data
+	// 	},
+	// })
 
 	const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
-		loginMutation(userData)
+		// loginMutation(userData)
+		dispatch(
+			loginThunk(
+				userData.email,
+				userData.password
+			)
+		)
 	}
 
 	return (
 		<section className='w-full flex items-center h-[100vh] justify-center'>
-			{isPending ? <div>...Loading</div> : <div>{data?.user.email}</div>}
+			{/* {isPending ? <div>...Loading</div> : <div>{data?.user.email}</div>} */}
+			{user.user.email === "" ? <div>...Loading</div> : <div>{user.user.email}</div>}
 			<form onSubmit={handleLogin} className='w-1/5 h-2/3 flex flex-col gap-y-5 items-center'>
 				<div className='flex flex-col gap-y-1 w-full'>
 					<label htmlFor="email" className="block text-sm font-medium text-gray-700">

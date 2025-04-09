@@ -71,6 +71,8 @@ const HomePage = () => {
 		queryFn:  () => getAllProducts({ pageParam: pageNumber.end }), placeholderData: keepPreviousData, 
 		enabled: enabled 
 	})
+	//? Также есть Suspense ( useSuspenseQuery для работы ). Прикол suspense в том, что data будет всегда ( в useQuery data может быть undefined, нужны проверки). Для его работы нужен Suspense компонент ( в React он есть ). Все, оборачиваем в Suspense то, что грузится с помощью useSuspenseQuery и все будет отлично
+	//? prefetchQuery - используется для предварительной загрузки данных, например, если из другого компонента будет использован useQuery для этих же данных ( по ключу ), то данные уже возьмутся из кеша
 
 	// const { data: ProductsData, isSuccess: ProductsIsSuccess, isFetching, isLoading, isPending, status, fetchStatus } = useQuery({ 
 	// 	queryKey: ['products', pageNumber], 
