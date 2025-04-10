@@ -1,6 +1,5 @@
 //! МОЙ ВАРИАНТ
 
-import { cookies } from 'next/headers'
 import {	NextRequest, NextResponse } from 'next/server'
 
 export function middleware(request: NextRequest) {

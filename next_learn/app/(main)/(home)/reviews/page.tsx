@@ -1,32 +1,34 @@
-import Users from '@/app/_components/Users'
+// import Users from '@/app/_components/Users'
 
-const fetchData = async () => {
-	"use server"
+// const fetchData = async () => {
+// 	"use server"
 
-	const response = await fetch('http://localhost:5000/users', {
-		next: {
-			revalidate: 60 // в секундах
-		},
-		cache: 'force-cache' // только статика,
-	})
-	const data = await response.json()
-	return data
-}
+// 	const response = await fetch('http://localhost:5000/users', {
+// 		next: {
+// 			revalidate: 60 // в секундах
+// 		},
+// 		cache: 'force-cache' // только статика,
+// 	})
+// 	const data = await response.json()
+// 	return data
+// }
 
-export default async function () {
+export default async function ReviewsPage() {
 
-	const data = await fetchData()
-	console.log(data)
-	if (data) {
-		return (
-			<div>
-				<h1>Отзывы клиентов</h1>
-				{data.map((user: any) => {
-					return (
-						<Users user={user} key={user.id} />
-					)
-				})}
-			</div>
-		)
-	}
+	// const data = await fetchData()
+	// if (data) {
+	// 	return (
+	// 		<div>
+	// 			<h1>Отзывы клиентов</h1>
+	// 			{data.map((user: any) => {
+	// 				return (
+	// 					<Users user={user} key={user.id} />
+	// 				)
+	// 			})}
+	// 		</div>
+	// 	)
+	// }
+	<div>
+		reviews
+	</div>
 }
