@@ -12,6 +12,13 @@ export type IProductInOrder = {
 	id: number;
 };
 
+export type IProduct = {
+	name: string;
+	description: string;
+	price: number;
+	id: number;
+}
+
 export type IOrder = {
 	user_id: number;
 	order_price: number;
