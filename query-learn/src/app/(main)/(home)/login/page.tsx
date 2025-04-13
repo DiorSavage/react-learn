@@ -1,11 +1,6 @@
 "use client"
 
-import { actions as userActions } from '@/store/slices/user.slice'
-import { queryClient } from '@/shared/api/QueryClient'
 import { useAppDispatch, useAppSelector } from '@/shared/hooks/hooks'
-import { useMutation } from '@tanstack/react-query'
-import { UserLoginType } from '@/types/users.type'
-import { loginUser } from '@/shared/api/api'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { loginThunk } from './loginThunk'

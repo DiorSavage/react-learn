@@ -45,7 +45,7 @@ const HomePage = () => {
 
 	const [pageNumber, setPageNumber] = useState<{ start: number; end: number }>({
 		start: 0,
-		end: 2
+		end: 3
 	})
 
 
@@ -68,7 +68,7 @@ const HomePage = () => {
 	
 	const { data: ProductsData, isSuccess: ProductsIsSuccess, isFetching, isLoading, isPending, status, fetchStatus } = useQuery({ 
 		queryKey: ['products', pageNumber], 
-		queryFn:  () => getAllProducts({ pageParam: pageNumber.end }), placeholderData: keepPreviousData, 
+		queryFn:  () => getAllProducts({ pageParam: pageNumber.end }), placeholderData: keepPreviousData,
 		enabled: enabled 
 	})
 	//? Также есть Suspense ( useSuspenseQuery для работы ). Прикол suspense в том, что data будет всегда ( в useQuery data может быть undefined, нужны проверки). Для его работы нужен Suspense компонент ( в React он есть ). Все, оборачиваем в Suspense то, что грузится с помощью useSuspenseQuery и все будет отлично
@@ -129,14 +129,14 @@ const HomePage = () => {
 				</div>
 				<h1 className='text-2xl font-bold text-center my-5'>Products</h1>
 				<div className='flex flex-col gap-y-5 px-10 py-5 bg-gray-100 rounded-lg shadow-md'>
-					{!isLoading && ProductsData ? ProductsData.slice(0, pageNumber.end - 2).map(product => (
+					{!isLoading && ProductsData ? ProductsData.products.slice(0, pageNumber.end - 2).map(product => (
 						<div key={product.id} className={`flex flex-col gap-y-3 p-4 bg-white rounded-lg shadow-sm ${isFetching ? "opacity-40" : "opacity-100"}`}>
 							<span className='font-semibold text-lg'>Product Name: <span className='font-normal'>{product.name}</span></span>
 							<span className='font-semibold text-lg'>Price: <span className='font-normal'>${product.price}</span></span>
 							<span className='font-semibold text-lg'>Description: <span className='font-normal'>{product.description}</span></span>
 						</div>
 					)) : <div>Loading...</div>}
-					{!isFetching && status == 'success' ? ProductsData.slice(pageNumber.end - 2).map(product => (
+					{!isFetching && status == 'success' ? ProductsData.products.slice(pageNumber.end - 2).map(product => (
 						<div key={product.id} className={`flex flex-col gap-y-3 p-4 bg-white rounded-lg shadow-sm ${isFetching ? "opacity-40" : "opacity-100"}`}>
 							<span className='font-semibold text-lg'>Product Name: <span className='font-normal'>{product.name}</span></span>
 							<span className='font-semibold text-lg'>Price: <span className='font-normal'>${product.price}</span></span>

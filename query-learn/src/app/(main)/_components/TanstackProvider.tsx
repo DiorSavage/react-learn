@@ -1,6 +1,6 @@
 "use client"
 
-import { QueryClientProvider } from '@tanstack/react-query';
+import { dehydrate, HydrationBoundary, QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from '@/shared/api/QueryClient';
 
 const TanstackProvider = ({ children }: { children: React.ReactNode }) => {

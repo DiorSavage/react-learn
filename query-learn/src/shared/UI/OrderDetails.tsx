@@ -1,7 +1,7 @@
 import { IOrder } from '@/types/orders.type'
 import type { UseMutationResult } from '@tanstack/react-query'
 
-const OrderDetails = ({ order, deleteOrderMutation }: { order: IOrder, deleteOrderMutation: UseMutationResult<string, Error, {
+const OrderDetails = ({ order, deleteOrderMutation }: { order: IOrder, deleteOrderMutation?: UseMutationResult<string, Error, {
   order_id: number;
 }, unknown> }) => {
 
@@ -20,7 +20,7 @@ const OrderDetails = ({ order, deleteOrderMutation }: { order: IOrder, deleteOrd
     elem.classList.add("opacity-0")
     setTimeout(() => {
       elem.classList.add("hidden")
-      deleteOrderMutation.mutate({ order_id: order.id })
+      deleteOrderMutation && deleteOrderMutation.mutate({ order_id: order.id })
     }, 300);
   }
   // deleteOrderMutation.variables //? хранит состояния текущей мутации

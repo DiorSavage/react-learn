@@ -13,3 +13,21 @@ export type IProductInOrder = {
 	category: string | null;
 	id: number;
 };
+
+export type IOrderInProduct = {
+  promocode: string;
+  created_at: Date;
+  order_price: number;
+  user_id: number;
+  id: number;
+}
+
+export type IProduct = {
+	name: string;
+	category: string | null;
+	id: number;
+	price: number;
+	count: number;
+	description: string;
+	orders: IOrderInProduct[]
+}

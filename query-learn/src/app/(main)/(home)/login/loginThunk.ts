@@ -52,7 +52,7 @@ export const createOrderThunk = ( promocode: string, user_id: number, order_pric
 		}
 	})
 	if (mutationResult) {
-
+		return mutationResult
 	}
 }
 

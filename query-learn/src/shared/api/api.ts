@@ -1,9 +1,8 @@
 "use server"
 
 import { CreateOrderType, IOrder } from '@/types/orders.type'
-import type { ProductAllType } from '@/types/products.type'
+import type { IProduct, ProductAllType } from '@/types/products.type'
 import type { UserAllType, UserLoginFormData, UserLoginType } from '@/types/users.type'
-import { ApiError } from 'next/dist/server/api-utils'
 
 
 // export const usersListApi = {
@@ -20,8 +19,16 @@ import { ApiError } from 'next/dist/server/api-utils'
 
 //? ProductsApi
 export const getAllProducts = async ({ pageParam, signal }: { signal?: AbortSignal, pageParam?: number }): Promise<ProductAllType[]> => {
-	const response = await fetch(`${process.env.BASE_URL_API}products/?end=${pageParam}`, {
-		// signal: signal,
+	const response = await fetch(`http://localhost:8000/products/?end=${pageParam || 0}`, {
+		headers: {
+			"Content-Type": "application/json"
+		}
+	})
+	return response.json()
+}
+
+export const getProductById = async ({ product_id }: { product_id: number }): Promise<IProduct> => {
+	const response = await fetch(`http://localhost:8000/products/${product_id}`, {
 		headers: {
 			"Content-Type": "application/json"
 		}
@@ -71,6 +78,18 @@ export const loginUser = async (userData: UserLoginFormData): Promise<UserLoginT
 //? OrderApi
 export const getAllOrders = async (): Promise<IOrder[]> => {
 	const response = await fetch(`${process.env.BASE_URL_API}orders`,
+		{
+			headers: {
+				"Content-Type": "application/json"
+			}
+		}
+	)
+	const data = await response.json()
+	return data
+}
+
+export const getOrderById = async ({ order_id }: { order_id: number }) => {
+	const response = await fetch(`${process.env.BASE_URL_API}orders/${order_id}`,
 		{
 			headers: {
 				"Content-Type": "application/json"
