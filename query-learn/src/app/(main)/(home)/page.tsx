@@ -117,7 +117,7 @@ const HomePage = () => {
 				</div> */}
 				{/* useQuery */}
 				<div className='flex flex-col gap-y-5 px-10 py-5 bg-gray-100 rounded-lg shadow-md'>
-					{data.map(user => {
+					{/* {data && data.map(user => {
 						return (
 							<div key={user.email} className='flex flex-col gap-y-3 p-4 bg-white rounded-lg shadow-sm'>
 								<span className='font-semibold text-lg'>Email: <span className='font-normal'>{user.email}</span></span>
@@ -125,11 +125,11 @@ const HomePage = () => {
 								<span className='font-semibold text-lg'>Age: <span className='font-normal'>{user.age}</span></span>
 							</div>
 						)
-					})}
+					})} */}
 				</div>
 				<h1 className='text-2xl font-bold text-center my-5'>Products</h1>
 				<div className='flex flex-col gap-y-5 px-10 py-5 bg-gray-100 rounded-lg shadow-md'>
-					{!isLoading && ProductsData ? ProductsData.products.slice(0, pageNumber.end - 2).map(product => (
+					{/* {!isLoading && ProductsData ? ProductsData.products.slice(0, pageNumber.end - 2).map(product => (
 						<div key={product.id} className={`flex flex-col gap-y-3 p-4 bg-white rounded-lg shadow-sm ${isFetching ? "opacity-40" : "opacity-100"}`}>
 							<span className='font-semibold text-lg'>Product Name: <span className='font-normal'>{product.name}</span></span>
 							<span className='font-semibold text-lg'>Price: <span className='font-normal'>${product.price}</span></span>
@@ -142,7 +142,7 @@ const HomePage = () => {
 							<span className='font-semibold text-lg'>Price: <span className='font-normal'>${product.price}</span></span>
 							<span className='font-semibold text-lg'>Description: <span className='font-normal'>{product.description}</span></span>
 						</div>
-					)) : <div>Fetching...</div>}
+					)) : <div>Fetching...</div>} */}
 				</div>
 				<div className='flex justify-between mt-4 w-1/2 mx-auto'>
 					<button disabled={pageNumber.start == 0 || !enabled} onClick={() => {

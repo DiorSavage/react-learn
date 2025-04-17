@@ -5,7 +5,7 @@ import { useAppSelector } from '../hooks/hooks'
 
 const Header = () => {
 
-	const isActive = localStorage.getItem("fstfastapitoken")
+	// const isActive = localStorage.getItem("fstfastapitoken")
 	const userData = useAppSelector(state => state.userSlice)
 
 	return (
